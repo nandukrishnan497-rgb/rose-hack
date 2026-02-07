@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Connection Established</title>
+
+<style>
+  body {
+    background: black;
+    color: #00ff66;
+    font-family: "Courier New", monospace;
+    padding: 20px;
+    overflow: hidden;
+  }
+
+  #terminal {
+    white-space: pre-wrap;
+    font-size: 16px;
+    line-height: 1.5;
+  }
+
+  .cursor {
+    display: inline-block;
+    width: 10px;
+    height: 18px;
+    background: #00ff66;
+    animation: blink 1s infinite;
+    margin-left: 4px;
+  }
+
+  @keyframes blink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0; }
+  }
+
+  /* GLITCH EFFECT */
+  .glitch {
+    animation: glitch 0.15s infinite;
+  }
+
+  @keyframes glitch {
+    0% { transform: translate(0); }
+    20% { transform: translate(-3px, 2px); }
+    40% { transform: translate(3px, -2px); }
+    60% { transform: translate(-2px, 1px); }
+    80% { transform: translate(2px, -1px); }
+    100% { transform: translate(0); }
+  }
+
+  /* ALERT RED */
+  .alert {
+    color: #ff0033;
+  }
+
+  /* SCREEN SHAKE */
+  .shake {
+    animation: shake 0.3s;
+  }
+
+  @keyframes shake {
+    0% { transform: translate(0); }
+    25% { transform: translate(-5px, 0); }
+    50% { transform: translate(5px, 0); }
+    75% { transform: translate(-5px, 0); }
+    100% { transform: translate(0); }
+  }
+
+  /* FINAL MESSAGE */
+  #final {
+    display: none;
+    text-align: center;
+    margin-top: 40px;
+    font-size: 40px;
+    color: #ff4d6d;
+    font-family: "Segoe UI", sans-serif;
+    animation: fadeIn 2s ease forwards;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.9); }
+    to { opacity: 1; transform: scale(1); }
+  }
+</style>
+</head>
+<body>
+
+<div id="terminal"></div><span class="cursor"></span>
+<div id="final">I LOVE YOU SONA ❤️</div>
+
+<script>
+  const terminal = document.getElementById("terminal");
+  const finalMessage = document.getElementById("final");
+
+  const lines = [
+    "> connecting to remote system...",
+    "> bypassing firewall...",
+    "> injecting payload...",
+    "> WARNING: unauthorized access detected",
+    "> overriding security protocols...",
+    "",
+    "> ACCESS GRANTED",
+    "> downloading emotional data...",
+    "> analyzing heart.exe...",
+    "",
+    "> 🌹 rose successfully delivered",
+    "> message: Happy Rose Day",
+    "> status: you are missed."
+  ];
+
+  const glitchChars = "@#$%&*<>/\\[]{}=+~";
+  let line = 0;
+  let char = 0;
+  const speed = 35;
+
+  function randomGlitchChar() {
+    return glitchChars[Math.floor(Math.random() * glitchChars.length)];
+  }
+
+  function triggerGlitch(duration = 400) {
+    terminal.classList.add("glitch");
+    document.body.classList.add("shake");
+    setTimeout(() => {
+      terminal.classList.remove("glitch");
+      document.body.classList.remove("shake");
+    }, duration);
+  }
+
+  function type() {
+    if (line < lines.length) {
+      if (char < lines[line].length) {
+
+        if (Math.random() < 0.05) {
+          terminal.textContent += randomGlitchChar();
+        } else {
+          terminal.textContent += lines[line][char];
+          char++;
+        }
+
+        setTimeout(type, speed);
+
+      } else {
+        terminal.textContent += "\n";
+
+        if (
+          lines[line].includes("WARNING") ||
+          lines[line].includes("ACCESS") ||
+          lines[line].includes("rose")
+        ) {
+          triggerGlitch();
+        }
+
+        if (lines[line].includes("WARNING")) {
+          terminal.classList.add("alert");
+          setTimeout(() => terminal.classList.remove("alert"), 600);
+        }
+
+        char = 0;
+        line++;
+        setTimeout(type, 500);
+      }
+    } else {
+      // SHOW FINAL LOVE MESSAGE
+      setTimeout(() => {
+        finalMessage.style.display = "block";
+      }, 800);
+    }
+  }
+
+  type();
+</script>
+
+</body>
+</html>
